@@ -148,6 +148,39 @@
 
 ---
 
+<section id="rezerwacja" class="reservation">
+  <h2 class="section-title">Zarezerwuj termin lekcji</h2>
+  <form id="booking-form">
+    <div class="form-group">
+      <div class="form-group">
+  <label for="booking-date">Wybierz datę:</label>
+  <select id="booking-date" required></select>
+</div>
+
+<div class="form-group">
+  <label for="booking-time">Wybierz godzinę:</label>
+  <select id="booking-time" required></select>
+</div>
+
+    </div>
+
+    <div class="form-group">
+      <label for="booking-name">Imię</label>
+      <input type="text" id="booking-name" required>
+    </div>
+
+    <div class="form-group">
+      <label for="booking-email">Email</label>
+      <input type="email" id="booking-email" required>
+    </div>
+
+    <button type="submit" class="btn-primary">Zarezerwuj</button>
+    <p id="booking-result"></p>
+  </form>
+</section>
+
+---
+
 <section id="kontakt" class="contact">
   <h2 class="section-title">Skontaktuj się ze mną</h2>
   <form action="https://formsubmit.io/send/smichluk@gmail.com" method="POST">
@@ -229,6 +262,70 @@
     });
   });
 </script>
+
+<script>
+  const apiBase = "https://booking-api-nwmi.onrender.com"; // <-- Twój backend
+
+  const dateSelect = document.getElementById("booking-date");
+  const timeSelect = document.getElementById("booking-time");
+  const result = document.getElementById("booking-result");
+
+  let slotData = {};
+
+  // Ładowanie dostępnych terminów i godzin
+  fetch(`${apiBase}/available-slots`)
+    .then(res => res.json())
+    .then(data => {
+      slotData = data;
+      Object.keys(data).forEach(date => {
+        const opt = document.createElement("option");
+        opt.value = date;
+        opt.textContent = date;
+        dateSelect.appendChild(opt);
+      });
+      updateTimes();
+    });
+
+  // Po zmianie daty aktualizuj godziny
+  dateSelect.addEventListener("change", updateTimes);
+
+  function updateTimes() {
+    const selectedDate = dateSelect.value;
+    timeSelect.innerHTML = "";
+    if (slotData[selectedDate]) {
+      slotData[selectedDate].forEach(time => {
+        const opt = document.createElement("option");
+        opt.value = time;
+        opt.textContent = time;
+        timeSelect.appendChild(opt);
+      });
+    }
+  }
+
+  // Obsługa formularza
+  document.getElementById("booking-form").addEventListener("submit", function(e) {
+    e.preventDefault();
+
+    const date = dateSelect.value;
+    const time = timeSelect.value;
+    const name = document.getElementById("booking-name").value;
+    const email = document.getElementById("booking-email").value;
+
+    fetch(`${apiBase}/book-slot`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ date, time, name, email })
+    })
+    .then(res => res.json())
+    .then(data => {
+      result.textContent = data.message || data.detail;
+    })
+    .catch(() => {
+      result.textContent = "Wystąpił błąd podczas rezerwacji.";
+    });
+  });
+</script>
+
 
 </body>
 </html>

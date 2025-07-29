@@ -689,3 +689,11 @@ footer {
     font-size: 3em;
   }
 }
+.reservation {
+  margin-top: 40px;
+}
+
+#booking-result {
+  margin-top: 10px;
+  font-weight: bold;
+}
