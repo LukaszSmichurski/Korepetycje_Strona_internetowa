@@ -1,332 +1,500 @@
 <!DOCTYPE html>
 <html lang="pl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Korepetycje - Łukasz Śmichurski</title>
-  <link rel="stylesheet" href="style.css">
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-  <link rel="icon" href="favicon.ico" type="image/x-icon"> </head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Korepetycje - Łukasz Śmichurski</title>
+    <!-- Zakładam, że style.css zawiera podstawowe style dla nawigacji, sekcji itp. -->
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <style>
+        /* Dodatkowe style dla sekcji rezerwacji i komunikatów */
+        .reservation .form-group {
+            margin-bottom: 15px;
+        }
+        .reservation .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+            color: #333;
+        }
+        .reservation .form-group input,
+        .reservation .form-group select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-sizing: border-box;
+            font-size: 1rem;
+        }
+        .message-box {
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+            font-weight: 500;
+            text-align: center;
+            display: none; /* Ukryte domyślnie */
+        }
+        .message-box.success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .message-box.error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        .loading-spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #3498db;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            animation: spin 1s linear infinite;
+            display: inline-block;
+            vertical-align: middle;
+            margin-left: 10px;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .available-slots-display {
+            background-color: #f9f9f9;
+            border: 1px solid #eee;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+        .available-slots-display ul {
+            list-style: none;
+            padding: 0;
+        }
+        .available-slots-display ul li {
+            margin-bottom: 8px;
+            color: #555;
+        }
+        .available-slots-display ul ul {
+            margin-left: 20px;
+            list-style: disc;
+        }
+    </style>
+</head>
 <body>
 
 <nav>
-  <div class="nav-brand">
-    <a href="#"><strong>Korepetycje - Łukasz Śmichurski</strong></a>
-  </div>
-  <ul class="nav-links">
-    <li><a href="#o-mnie">O mnie</a></li>
-    <li><a href="#dlaczego-ja">Dlaczego ja?</a></li> <li><a href="#oferta">Oferta</a></li>
-    <li><a href="#opinie">Opinie</a></li>
-    <li><a href="#faq">FAQ</a></li> <li><a href="#kontakt">Kontakt</a></li>
-  </ul>
-  <div class="hamburger-menu">
-    <i class="fas fa-bars"></i>
-  </div>
+    <div class="nav-brand">
+        <a href="#"><strong>Korepetycje - Łukasz Śmichurski</strong></a>
+    </div>
+    <ul class="nav-links">
+        <li><a href="#o-mnie">O mnie</a></li>
+        <li><a href="#dlaczego-ja">Dlaczego ja?</a></li>
+        <li><a href="#oferta">Oferta</a></li>
+        <li><a href="#opinie">Opinie</a></li>
+        <li><a href="#faq">FAQ</a></li>
+        <li><a href="#kontakt">Kontakt</a></li>
+    </ul>
+    <div class="hamburger-menu">
+        <i class="fas fa-bars"></i>
+    </div>
 </nav>
 
 <header>
-  <div class="header-content">
-    <h1>Zdawaj przedmioty bezstresowo</h1>
-    <p>Indywidualne lekcje dopasowane do Twoich potrzeb</p>
-    <a href="#kontakt" class="btn-primary">Umów się na lekcję</a>
-  </div>
+    <div class="header-content">
+        <h1>Zdawaj przedmioty bezstresowo</h1>
+        <p>Indywidualne lekcje dopasowane do Twoich potrzeb</p>
+        <a href="#kontakt" class="btn-primary">Umów się na lekcję</a>
+    </div>
 </header>
 
 <section id="o-mnie" class="about-me">
-  <h2 class="section-title">O mnie</h2>
-  <div class="about-content">
-    <img src="c:\Users\lukas\OneDrive\Desktop\strona_internetowa\02db3db1-0c20-49ae-840d-052cbf696267.jpg" alt="Zdjęcie Łukasza Śmichurskiego" class="profile-pic">
-    <p>Jestem studentem Automatyki i Robotyki na Politechnice Poznańskiej oraz absolwentem renomowanego III LO w Poznaniu. Od ponad czterech lat prowadzę korepetycje głównie z matematyki i fizyki, wspierając uczniów na różnych poziomach – od szkoły podstawowej po liceum (poziom rozszerzony). Moje podejście opiera się na indywidualnym dopasowaniu materiału oraz tłumaczeniu zagadnień w sposób prosty i przystępny. Zależy mi, aby nauka była skuteczna, a jednocześnie przyjemna i motywująca.</p>
-  </div>
+    <h2 class="section-title">O mnie</h2>
+    <div class="about-content">
+        <!-- Zastąpiono lokalną ścieżkę do obrazu placeholderem -->
+        <img src="https://placehold.co/400x400/cccccc/333333?text=Łukasz+Śmichurski" alt="Zdjęcie Łukasza Śmichurskiego" class="profile-pic">
+        <p>Jestem studentem Automatyki i Robotyki na Politechnice Poznańskiej oraz absolwentem renomowanego III LO w Poznaniu. Od ponad czterech lat prowadzę korepetycje głównie z matematyki i fizyki, wspierając uczniów na różnych poziomach – od szkoły podstawowej po liceum (poziom rozszerzony). Moje podejście opiera się na indywidualnym dopasowaniu materiału oraz tłumaczeniu zagadnień w sposób prosty i przystępny. Zależy mi, aby nauka była skuteczna, a jednocześnie przyjemna i motywująca.</p>
+    </div>
 </section>
 
 ---
 
 <section id="dlaczego-ja" class="why-me">
-  <h2 class="section-title">Dlaczego wybrać moje korepetycje?</h2>
-  <div class="why-me-grid">
-    <div class="why-me-item">
-      <i class="fas fa-chalkboard-teacher why-me-icon"></i>
-      <h3>Indywidualne podejście</h3>
-      <p>Każda lekcja jest dopasowana do Twojego tempa nauki i stylu uczenia się, aby maksymalizować efektywność.</p>
+    <h2 class="section-title">Dlaczego wybrać moje korepetycje?</h2>
+    <div class="why-me-grid">
+        <div class="why-me-item">
+            <i class="fas fa-chalkboard-teacher why-me-icon"></i>
+            <h3>Indywidualne podejście</h3>
+            <p>Każda lekcja jest dopasowana do Twojego tempa nauki i stylu uczenia się, aby maksymalizować efektywność.</p>
+        </div>
+        <div class="why-me-item">
+            <i class="fas fa-lightbulb why-me-icon"></i>
+            <h3>Zrozumienie, nie zapamiętywanie</h3>
+            <p>Skupiam się na głębokim zrozumieniu materiału, a nie tylko na mechanicznym zapamiętywaniu wzorów i definicji.</p>
+        </div>
+        <div class="why-me-item">
+            <i class="fas fa-smile-beam why-me-icon"></i>
+            <h3>Bezstresowa atmosfera</h3>
+            <p>Uczę w sposób przystępny i cierpliwy, tworząc środowisko, w którym zadawanie pytań jest zawsze mile widziane.</p>
+        </div>
+        <div class="why-me-item">
+            <i class="fas fa-chart-line why-me-icon"></i>
+            <h3>Skuteczne przygotowanie</h3>
+            <p>Prowadzę zajęcia, które realnie przekładają się na poprawę ocen i pewność siebie przed sprawdzianami oraz maturą.</p>
+        </div>
     </div>
-    <div class="why-me-item">
-      <i class="fas fa-lightbulb why-me-icon"></i>
-      <h3>Zrozumienie, nie zapamiętywanie</h3>
-      <p>Skupiam się na głębokim zrozumieniu materiału, a nie tylko na mechanicznym zapamiętywaniu wzorów i definicji.</p>
-    </div>
-    <div class="why-me-item">
-      <i class="fas fa-smile-beam why-me-icon"></i>
-      <h3>Bezstresowa atmosfera</h3>
-      <p>Uczę w sposób przystępny i cierpliwy, tworząc środowisko, w którym zadawanie pytań jest zawsze mile widziane.</p>
-    </div>
-    <div class="why-me-item">
-      <i class="fas fa-chart-line why-me-icon"></i>
-      <h3>Skuteczne przygotowanie</h3>
-      <p>Prowadzę zajęcia, które realnie przekładają się na poprawę ocen i pewność siebie przed sprawdzianami oraz maturą.</p>
-    </div>
-  </div>
 </section>
 
 ---
 
 <section id="oferta" class="offer">
-  <h2 class="section-title">Oferta</h2>
-  <div class="offer-grid">
-    <div class="offer-item">
-      <i class="fas fa-calculator offer-icon"></i>
-      <h3>Matematyka</h3>
-      <p>Zajęcia dostosowane do poziomu ucznia: od podstaw po przygotowanie do matury. Praktyczne podejście i rozwiązywanie problemów krok po kroku.</p>
+    <h2 class="section-title">Oferta</h2>
+    <div class="offer-grid">
+        <div class="offer-item">
+            <i class="fas fa-calculator offer-icon"></i>
+            <h3>Matematyka</h3>
+            <p>Zajęcia dostosowane do poziomu ucznia: od podstaw po przygotowanie do matury. Praktyczne podejście i rozwiązywanie problemów krok po kroku.</p>
+        </div>
+        <div class="offer-item">
+            <i class="fas fa-atom offer-icon"></i>
+            <h3>Fizyka</h3>
+            <p>Intuicyjne tłumaczenie zjawisk fizycznych, eksperymenty myślowe, wzory w praktyce i solidne przygotowanie do sprawdzianów oraz egzaminów.</p>
+        </div>
     </div>
-    <div class="offer-item">
-      <i class="fas fa-atom offer-icon"></i>
-      <h3>Fizyka</h3>
-      <p>Intuicyjne tłumaczenie zjawisk fizycznych, eksperymenty myślowe, wzory w praktyce i solidne przygotowanie do sprawdzianów oraz egzaminów.</p>
-    </div>
-  </div>
 </section>
 
 ---
 
 <section id="opinie" class="reviews">
-  <h2 class="section-title">Opinie uczniów</h2>
-  <div class="review-grid">
-    <div class="review-item">
-      <p class="quote">„Świetne podejście i dużo cierpliwości. Córka uwielbia lekcje!”</p>
-      <p class="author">– Anna, mama Tomka</p>
+    <h2 class="section-title">Opinie uczniów</h2>
+    <div class="review-grid">
+        <div class="review-item">
+            <p class="quote">„Świetne podejście i dużo cierpliwości. Córka uwielbia lekcje!”</p>
+            <p class="author">– Anna, mama Tomka</p>
+        </div>
+        <div class="review-item">
+            <p class="quote">„Dzięki tym zajęciom w końcu zacząłem mówić po angielsku bez stresu!”</p>
+            <p class="author">– Michał</p>
+        </div>
+        <div class="review-item">
+            <p class="quote">„Łukasz potrafi wyjaśnić najtrudniejsze zagadnienia w prosty sposób. Moje oceny z fizyki znacznie się poprawiły!”</p>
+            <p class="author">– Kasia</p>
+        </div>
     </div>
-    <div class="review-item">
-      <p class="quote">„Dzięki tym zajęciom w końcu zacząłem mówić po angielsku bez stresu!”</p>
-      <p class="author">– Michał</p>
-    </div>
-     <div class="review-item">
-      <p class="quote">„Łukasz potrafi wyjaśnić najtrudniejsze zagadnienia w prosty sposób. Moje oceny z fizyki znacznie się poprawiły!”</p>
-      <p class="author">– Kasia</p>
-    </div>
-  </div>
 
-  <div class="google-reviews">
-    <p>Chcesz zobaczyć więcej opinii? Sprawdź nas na Google!</p>
-    <a href="https://www.google.com/search?sca_esv=dcf3457e0fc12c6a&sxsrf=AE3TifOzbabRDRMJf0hAaMspD668VvxPGQ:1753136208576&si=AMgyJEtREmoPL4P1I5IDCfuA8gybfVI2d5Uj7QMwYCZHKDZ-E06j1zsrrMCyFZxnbLWLKVOKPR-Ay98vIa9K1gjY5FdfDI0pJEjtLXnThoOD3Qp_cRdlId6fu9shtYqWzygrSvui3mw5bLpvQY8HBAJntBG_bTpYxur3p_i8hLoIuBp_9a7rftM%3D&q=%C5%81ukasz+%C5%9Amichurski+-+Matematyka+i+Fizyka+Opinie&sa=X&ved=2ahUKEwiH39Gn_c6OAxX3JxAIHY3jBr8Q0bkNegQIOxAD&biw=1920&bih=953&dpr=1" target="_blank" class="google-link">
-      <i class="fab fa-google"></i> Zobacz opinie na Google
-    </a>
-  </div>
+    <div class="google-reviews">
+        <p>Chcesz zobaczyć więcej opinii? Sprawdź nas na Google!</p>
+        <a href="https://www.google.com/search?sca_esv=dcf3457e0fc12c6a&sxsrf=AE3TifOzbabRDRMJf0hAaMspD668VvxPGQ:1753136208576&si=AMgyJEtREmoPL4P1I5IDCfuA8gybfVI2d5Uj7QMwYCZHKDZ-E06j1zsrrMCyFZxnbLWLKVOKPR-Ay98vIa9K1gjY5FdfDI0pJEjtLXnThoOD3Qp_cRdlId6fu9shtYqWzygrSvui3mw5bLpvQY8HBAJntBG_bTpYxur3p_i8hLoIuBp_9a7rftM%3D&q=%C5%81ukasz+%C5%9Amichurski+-+Matematyka+i+Fizyka+Opinie&sa=X&ved=2ahUKEwiH39Gn_c6OAxX3JxAIHY3jBr8Q0bkNegQIOxAD&biw=1920&bih=953&dpr=1" target="_blank" class="google-link">
+            <i class="fab fa-google"></i> Zobacz opinie na Google
+        </a>
+    </div>
 </section>
 
 ---
 
 <section id="faq" class="faq-section">
-  <h2 class="section-title">Często zadawane pytania</h2>
-  <div class="faq-container">
-    <div class="faq-item">
-      <h3 class="faq-question"><i class="fas fa-question-circle faq-icon"></i> Jak wyglądają pierwsze zajęcia?</h3>
-      <div class="faq-answer">
-        <p>Pierwsze zajęcia to przede wszystkim rozmowa o Twoich celach, obecnym poziomie wiedzy i trudnościach. Następnie wspólnie ustalimy plan działania. Zazwyczaj jest to lekcja zapoznawcza, na której rozwiązujemy kilka zadań, by ocenić luki w wiedzy.</p>
-      </div>
+    <h2 class="section-title">Często zadawane pytania</h2>
+    <div class="faq-container">
+        <div class="faq-item">
+            <h3 class="faq-question"><i class="fas fa-question-circle faq-icon"></i> Jak wyglądają pierwsze zajęcia?</h3>
+            <div class="faq-answer">
+                <p>Pierwsze zajęcia to przede wszystkim rozmowa o Twoich celach, obecnym poziomie wiedzy i trudnościach. Następnie wspólnie ustalimy plan działania. Zazwyczaj jest to lekcja zapoznawcza, na której rozwiązujemy kilka zadań, by ocenić luki w wiedzy.</p>
+            </div>
+        </div>
+        <div class="faq-item">
+            <h3 class="faq-question"><i class="fas fa-question-circle faq-icon"></i> Ile kosztuje godzina korepetycji?</h3>
+            <div class="faq-answer">
+                <p>Cena za godzinę korepetycji zależy od poziomu (szkoła podstawowa, liceum, poziom rozszerzony) oraz liczby zakupionych lekcji w pakiecie. Proszę o kontakt w celu uzyskania szczegółowego cennika.</p>
+            </div>
+        </div>
+        <div class="faq-item">
+            <h3 class="faq-question"><i class="fas fa-question-circle faq-icon"></i> Czy oferujesz pakiety lekcji?</h3>
+            <div class="faq-answer">
+                <p>Tak, oferuję atrakcyjne pakiety lekcji, które pozwalają na obniżenie ceny za pojedyncze zajęcia. Szczegóły pakietów omówimy podczas naszej rozmowy.</p>
+            </div>
+        </div>
+        <div class="faq-item">
+            <h3 class="faq-question"><i class="fas fa-question-circle faq-icon"></i> Czy prowadzisz zajęcia online/stacjonarnie?</h3>
+            <div class="faq-answer">
+                <p>Prowadzę zajęcia zarówno online (przez platformy do wideokonferencji z tablicą interaktywną), jak i stacjonarnie w Poznaniu. Dostosowuję się do preferencji ucznia.</p>
+            </div>
+        </div>
     </div>
-    <div class="faq-item">
-      <h3 class="faq-question"><i class="fas fa-question-circle faq-icon"></i> Ile kosztuje godzina korepetycji?</h3>
-      <div class="faq-answer">
-        <p>Cena za godzinę korepetycji zależy od poziomu (szkoła podstawowa, liceum, poziom rozszerzony) oraz liczby zakupionych lekcji w pakiecie. Proszę o kontakt w celu uzyskania szczegółowego cennika.</p>
-      </div>
-    </div>
-    <div class="faq-item">
-      <h3 class="faq-question"><i class="fas fa-question-circle faq-icon"></i> Czy oferujesz pakiety lekcji?</h3>
-      <div class="faq-answer">
-        <p>Tak, oferuję atrakcyjne pakiety lekcji, które pozwalają na obniżenie ceny za pojedyncze zajęcia. Szczegóły pakietów omówimy podczas naszej rozmowy.</p>
-      </div>
-    </div>
-    <div class="faq-item">
-      <h3 class="faq-question"><i class="fas fa-question-circle faq-icon"></i> Czy prowadzisz zajęcia online/stacjonarnie?</h3>
-      <div class="faq-answer">
-        <p>Prowadzę zajęcia zarówno online (przez platformy do wideokonferencji z tablicą interaktywną), jak i stacjonarnie w Poznaniu. Dostosowuję się do preferencji ucznia.</p>
-      </div>
-    </div>
-  </div>
 </section>
 
 ---
 
 <section id="rezerwacja" class="reservation">
-  <h2 class="section-title">Zarezerwuj termin lekcji</h2>
-  <form id="booking-form">
-    <div class="form-group">
-      <div class="form-group">
-  <label for="booking-date">Wybierz datę:</label>
-  <select id="booking-date" required></select>
-</div>
+    <h2 class="section-title">Zarezerwuj termin lekcji</h2>
 
-<div class="form-group">
-  <label for="booking-time">Wybierz godzinę:</label>
-  <select id="booking-time" required></select>
-</div>
-
+    <!-- Sekcja wyświetlająca dostępne sloty -->
+    <div class="available-slots-display">
+        <h3>Dostępne terminy:</h3>
+        <div id="availableSlots">
+            Ładowanie dostępnych terminów...
+            <div class="loading-spinner"></div>
+        </div>
     </div>
 
-    <div class="form-group">
-      <label for="booking-name">Imię</label>
-      <input type="text" id="booking-name" required>
-    </div>
+    <!-- Formularz rezerwacji -->
+    <form id="booking-form">
+        <div class="form-group">
+            <label for="bookingDate">Wybierz datę:</label>
+            <select id="bookingDate" name="date" required></select>
+        </div>
 
-    <div class="form-group">
-      <label for="booking-email">Email</label>
-      <input type="email" id="booking-email" required>
-    </div>
+        <div class="form-group">
+            <label for="bookingTime">Wybierz godzinę:</label>
+            <select id="bookingTime" name="time" required></select>
+        </div>
 
-    <button type="submit" class="btn-primary">Zarezerwuj</button>
-    <p id="booking-result"></p>
-  </form>
+        <div class="form-group">
+            <label for="bookingName">Imię:</label>
+            <input type="text" id="bookingName" name="name" required>
+        </div>
+
+        <div class="form-group">
+            <label for="bookingEmail">Email:</label>
+            <input type="email" id="bookingEmail" name="email" required>
+        </div>
+
+        <button type="submit" class="btn-primary">Zarezerwuj</button>
+        <div id="responseMessage" class="message-box"></div>
+    </form>
 </section>
 
 ---
 
 <section id="kontakt" class="contact">
-  <h2 class="section-title">Skontaktuj się ze mną</h2>
-  <form action="https://formsubmit.io/send/smichluk@gmail.com" method="POST">
-    <div class="form-group">
-      <label for="name">Imię</label>
-      <input type="text" id="name" name="name" required>
-    </div>
+    <h2 class="section-title">Skontaktuj się ze mną</h2>
+    <form action="https://formsubmit.io/send/smichluk@gmail.com" method="POST">
+        <div class="form-group">
+            <label for="name">Imię</label>
+            <input type="text" id="name" name="name" required>
+        </div>
 
-    <div class="form-group">
-      <label for="email">Adres e-mail</label>
-      <input type="email" id="email" name="email" required>
-    </div>
+        <div class="form-group">
+            <label for="email">Adres e-mail</label>
+            <input type="email" id="email" name="email" required>
+        </div>
 
-    <div class="form-group">
-      <label for="subject">Temat (opcjonalnie)</label>
-      <input type="text" id="subject" name="_subject">
-    </div>
+        <div class="form-group">
+            <label for="subject">Temat (opcjonalnie)</label>
+            <input type="text" id="subject" name="_subject">
+        </div>
 
-    <div class="form-group">
-      <label for="message">Wiadomość</label>
-      <textarea id="message" name="message" rows="6" required></textarea>
-    </div>
+        <div class="form-group">
+            <label for="message">Wiadomość</label>
+            <textarea id="message" name="message" rows="6" required></textarea>
+        </div>
 
-    <button type="submit" class="btn-primary">Wyślij wiadomość</button>
-  </form>
-  <div class="contact-info">
-    <p><i class="fas fa-envelope"></i> Email: <a href="mailto:smichluk@gmail.com">smichluk@gmail.com</a></p>
-    <p><i class="fas fa-phone"></i> Telefon: <a href="tel:+48123456789">[Twój numer telefonu]</a></p>
-  </div>
+        <button type="submit" class="btn-primary">Wyślij wiadomość</button>
+    </form>
+    <div class="contact-info">
+        <p><i class="fas fa-envelope"></i> Email: <a href="mailto:smichluk@gmail.com">smichluk@gmail.com</a></p>
+        <p><i class="fas fa-phone"></i> Telefon: <a href="tel:+48123456789">[Twój numer telefonu]</a></p>
+    </div>
 </section>
 
 <footer>
-  <p>&copy; 2025 Korepetycje - Łukasz Śmichurski</p>
-  <div class="social-icons">
-    <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a> <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a> </div>
+    <p>&copy; 2025 Korepetycje - Łukasz Śmichurski</p>
+    <div class="social-icons">
+        <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+        <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+    </div>
 </footer>
 
 <script>
-  document.addEventListener('DOMContentLoaded', function() {
-    const hamburger = document.querySelector('.hamburger-menu');
-    const navLinks = document.querySelector('.nav-links');
+    document.addEventListener('DOMContentLoaded', function() {
+        const hamburger = document.querySelector('.hamburger-menu');
+        const navLinks = document.querySelector('.nav-links');
 
-    hamburger.addEventListener('click', function() {
-      navLinks.classList.toggle('active');
-    });
-
-    // Close menu when a link is clicked (for mobile)
-    navLinks.querySelectorAll('a').forEach(link => {
-      link.addEventListener('click', () => {
-        if (navLinks.classList.contains('active')) {
-          navLinks.classList.remove('active');
-        }
-      });
-    });
-
-    // FAQ Accordion functionality
-    const faqQuestions = document.querySelectorAll('.faq-question');
-    faqQuestions.forEach(question => {
-      question.addEventListener('click', () => {
-        const answer = question.nextElementSibling;
-        const parentItem = question.closest('.faq-item');
-
-        // Close all other open answers
-        document.querySelectorAll('.faq-item').forEach(item => {
-          if (item !== parentItem && item.classList.contains('active')) {
-            item.classList.remove('active');
-            item.querySelector('.faq-answer').style.maxHeight = null;
-          }
+        hamburger.addEventListener('click', function() {
+            navLinks.classList.toggle('active');
         });
 
-        // Toggle current answer
-        parentItem.classList.toggle('active');
-        if (answer.style.maxHeight) {
-          answer.style.maxHeight = null;
-        } else {
-          answer.style.maxHeight = answer.scrollHeight + "px";
+        // Close menu when a link is clicked (for mobile)
+        navLinks.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                if (navLinks.classList.contains('active')) {
+                    navLinks.classList.remove('active');
+                }
+            });
+        });
+
+        // FAQ Accordion functionality
+        const faqQuestions = document.querySelectorAll('.faq-question');
+        faqQuestions.forEach(question => {
+            question.addEventListener('click', () => {
+                const answer = question.nextElementSibling;
+                const parentItem = question.closest('.faq-item');
+
+                // Close all other open answers
+                document.querySelectorAll('.faq-item').forEach(item => {
+                    if (item !== parentItem && item.classList.contains('active')) {
+                        item.classList.remove('active');
+                        item.querySelector('.faq-answer').style.maxHeight = null;
+                    }
+                });
+
+                // Toggle current answer
+                parentItem.classList.toggle('active');
+                if (answer.style.maxHeight) {
+                    answer.style.maxHeight = null;
+                } else {
+                    answer.style.maxHeight = answer.scrollHeight + "px";
+                }
+            });
+        });
+
+        // --- Booking System Logic ---
+        const apiBase = "https://booking-api-nwmi.onrender.com"; // Twój backend API
+        const availableSlotsDiv = document.getElementById('availableSlots');
+        const bookingForm = document.getElementById('booking-form');
+        const responseMessageDiv = document.getElementById('responseMessage');
+        const bookingDateSelect = document.getElementById('bookingDate');
+        const bookingTimeSelect = document.getElementById('bookingTime');
+
+        let slotData = {}; // Przechowuje dane o dostępnych slotach
+
+        // Funkcja do pobierania i wyświetlania dostępnych slotów
+        async function fetchAvailableSlots() {
+            availableSlotsDiv.innerHTML = 'Ładowanie dostępnych terminów... <div class="loading-spinner"></div>';
+            try {
+                const response = await fetch(`${apiBase}/available-slots`);
+                if (!response.ok) {
+                    throw new Error(`Błąd HTTP! status: ${response.status}`);
+                }
+                const data = await response.json();
+                slotData = data; // Zapisz pobrane dane
+                renderAvailableSlots(data);
+                populateDateSelect(data); // Uzupełnij daty w formularzu
+            } catch (error) {
+                availableSlotsDiv.innerHTML = `<p style="color: red;">Błąd podczas pobierania terminów: ${error.message}</p>`;
+                console.error('Błąd podczas pobierania dostępnych terminów:', error);
+            }
         }
-      });
+
+        // Funkcja do renderowania dostępnych slotów w sekcji "Dostępne terminy"
+        function renderAvailableSlots(slots) {
+            if (Object.keys(slots).length === 0) {
+                availableSlotsDiv.innerHTML = '<p>Brak dostępnych terminów.</p>';
+                return;
+            }
+
+            let html = '<ul class="list-disc list-inside">';
+            for (const date in slots) {
+                html += `<li><strong>${date}:</strong></li>`;
+                html += `<ul style="margin-left: 20px;">`;
+                slots[date].forEach(time => {
+                    html += `<li>${time}</li>`;
+                });
+                html += `</ul>`;
+            }
+            html += '</ul>';
+            availableSlotsDiv.innerHTML = html;
+        }
+
+        // Funkcja do uzupełniania selecta z datami
+        function populateDateSelect(slots) {
+            bookingDateSelect.innerHTML = ''; // Wyczyść poprzednie opcje
+            const dates = Object.keys(slots).sort(); // Sortuj daty alfabetycznie
+            if (dates.length === 0) {
+                const opt = document.createElement("option");
+                opt.value = "";
+                opt.textContent = "Brak dostępnych dat";
+                bookingDateSelect.appendChild(opt);
+                bookingDateSelect.disabled = true;
+                bookingTimeSelect.disabled = true;
+                return;
+            }
+
+            dates.forEach(date => {
+                const opt = document.createElement("option");
+                opt.value = date;
+                opt.textContent = date;
+                bookingDateSelect.appendChild(opt);
+            });
+            bookingDateSelect.disabled = false;
+            updateTimeSelect(); // Uzupełnij godziny dla pierwszej daty
+        }
+
+        // Funkcja do uzupełniania selecta z godzinami na podstawie wybranej daty
+        function updateTimeSelect() {
+            const selectedDate = bookingDateSelect.value;
+            bookingTimeSelect.innerHTML = ''; // Wyczyść poprzednie opcje
+            if (slotData[selectedDate] && slotData[selectedDate].length > 0) {
+                slotData[selectedDate].forEach(time => {
+                    const opt = document.createElement("option");
+                    opt.value = time;
+                    opt.textContent = time;
+                    bookingTimeSelect.appendChild(opt);
+                });
+                bookingTimeSelect.disabled = false;
+            } else {
+                const opt = document.createElement("option");
+                opt.value = "";
+                opt.textContent = "Brak dostępnych godzin";
+                bookingTimeSelect.appendChild(opt);
+                bookingTimeSelect.disabled = true;
+            }
+        }
+
+        // Funkcja do wyświetlania komunikatów (sukces/błąd)
+        function showMessage(message, type) {
+            responseMessageDiv.textContent = message;
+            responseMessageDiv.className = `message-box ${type}`;
+            responseMessageDiv.style.display = 'block'; // Pokaż div
+            setTimeout(() => {
+                responseMessageDiv.style.display = 'none'; // Ukryj po 5 sekundach
+            }, 5000);
+        }
+
+        // Nasłuchiwanie zmiany daty w formularzu rezerwacji
+        bookingDateSelect.addEventListener('change', updateTimeSelect);
+
+        // Obsługa wysyłania formularza rezerwacji
+        bookingForm.addEventListener('submit', async (event) => {
+            event.preventDefault();
+
+            const bookingData = {
+                date: bookingDateSelect.value,
+                time: bookingTimeSelect.value,
+                name: document.getElementById('bookingName').value,
+                email: document.getElementById('bookingEmail').value
+            };
+
+            try {
+                const response = await fetch(`${apiBase}/book-slot`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(bookingData)
+                });
+
+                const result = await response.json();
+
+                if (response.ok) {
+                    showMessage(result.message, 'success');
+                    bookingForm.reset(); // Wyczyść formularz po sukcesie
+                    fetchAvailableSlots(); // Odśwież dostępne sloty
+                } else {
+                    showMessage(result.detail || 'Wystąpił nieznany błąd.', 'error');
+                }
+            } catch (error) {
+                showMessage(`Błąd sieci: ${error.message}`, 'error');
+                console.error('Błąd podczas rezerwacji terminu:', error);
+            }
+        });
+
+        // Początkowe pobranie dostępnych slotów po załadowaniu strony
+        fetchAvailableSlots();
     });
-  });
 </script>
-
-<script>
-  const apiBase = "https://booking-api-nwmi.onrender.com"; // <-- Twój backend
-
-  const dateSelect = document.getElementById("booking-date");
-  const timeSelect = document.getElementById("booking-time");
-  const result = document.getElementById("booking-result");
-
-  let slotData = {};
-
-  // Pobierz dostępne terminy i godziny
-  fetch(`${apiBase}/available-slots`)
-    .then(res => res.json())
-    .then(data => {
-      slotData = data;
-      Object.keys(data).forEach(date => {
-        const opt = document.createElement("option");
-        opt.value = date;
-        opt.textContent = date;
-        dateSelect.appendChild(opt);
-      });
-      updateTimes(); // pokaż godziny dla pierwszej daty
-    });
-
-  // Gdy użytkownik wybierze datę — uzupełnij godziny
-  dateSelect.addEventListener("change", updateTimes);
-
-  function updateTimes() {
-    const selectedDate = dateSelect.value;
-    timeSelect.innerHTML = "";
-    if (slotData[selectedDate]) {
-      slotData[selectedDate].forEach(time => {
-        const opt = document.createElement("option");
-        opt.value = time;
-        opt.textContent = time;
-        timeSelect.appendChild(opt);
-      });
-    }
-  }
-
-  // Obsługa rezerwacji
-  document.getElementById("booking-form").addEventListener("submit", function (e) {
-    e.preventDefault();
-
-    const date = dateSelect.value;
-    const time = timeSelect.value;
-    const name = document.getElementById("booking-name").value;
-    const email = document.getElementById("booking-email").value;
-
-    fetch(`${apiBase}/book-slot`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ date, time, name, email })
-    })
-    .then(res => res.json())
-    .then(data => {
-      result.textContent = data.message || data.detail;
-    })
-    .catch(() => {
-      result.textContent = "Wystąpił błąd podczas rezerwacji.";
-    });
-  });
-</script>
-
-
 
 </body>
 </html>
