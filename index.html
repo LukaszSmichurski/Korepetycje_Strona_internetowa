@@ -272,7 +272,7 @@
 
   let slotData = {};
 
-  // Ładowanie dostępnych terminów i godzin
+  // Pobierz dostępne terminy i godziny
   fetch(`${apiBase}/available-slots`)
     .then(res => res.json())
     .then(data => {
@@ -283,10 +283,10 @@
         opt.textContent = date;
         dateSelect.appendChild(opt);
       });
-      updateTimes();
+      updateTimes(); // pokaż godziny dla pierwszej daty
     });
 
-  // Po zmianie daty aktualizuj godziny
+  // Gdy użytkownik wybierze datę — uzupełnij godziny
   dateSelect.addEventListener("change", updateTimes);
 
   function updateTimes() {
@@ -302,8 +302,8 @@
     }
   }
 
-  // Obsługa formularza
-  document.getElementById("booking-form").addEventListener("submit", function(e) {
+  // Obsługa rezerwacji
+  document.getElementById("booking-form").addEventListener("submit", function (e) {
     e.preventDefault();
 
     const date = dateSelect.value;
@@ -325,6 +325,7 @@
     });
   });
 </script>
+
 
 
 </body>
